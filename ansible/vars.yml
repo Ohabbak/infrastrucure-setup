@@ -1,0 +1,2 @@
+private_ec2_ip: "10.0.2.164"  # Replace with actual private EC2 IP
+app_port: 30010  # Replace with actual application port

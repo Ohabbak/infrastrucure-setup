@@ -1,0 +1,33 @@
+---
+- name: Setup K3s on Private EC2
+  hosts: private-instance
+  become: yes
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - curl
+        - apt-transport-https
+
+    - name: Download and install K3s
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        executable: /bin/bash
+
+    - name: Ensure K3s is running
+      systemd:
+        name: k3s
+        state: started
+        enabled: yes
+
+    # - name: Get the K3s server node token
+    #   shell: cat /var/lib/rancher/k3s/server/node-token
+    #   register: node_token
+
+    # - name: Save K3s node token to file
+    #   copy:
+    #     content: "{{ node_token.stdout }}"
+    #     dest: /tmp/k3s_node_token.txt

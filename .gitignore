@@ -1,0 +1,71 @@
+# --- Terraform ---
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.backup
+
+# Crash log files
+crash.log
+
+# Exclude any Terraform variable files with sensitive data
+*.tfvars
+
+# Ignore override files as they are usually used for local development purposes
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore generated plan files
+*.tfplan
+
+# Ignore .terraformrc and .terraform.d directory
+.terraformrc
+terraform.rc
+
+# --- Ansible ---
+
+# Ignore Ansible fact cache files
+*.fact
+
+# Ignore SSH key files
+*.key
+*.pem
+
+# Ignore Ansible role dependencies
+roles/*/files/
+roles/*/vars/
+roles/*/defaults/
+roles/*/templates/
+roles/*/meta/
+
+# Ignore Ansible vault files if sensitive data is stored
+*.vault
+
+# Ignore retry files created when a playbook fails
+*.retry
+
+# Ignore temporary files
+*.bak
+*.swp
+*.tmp
+
+# --- General Git Ignore Patterns ---
+
+# Ignore IDE or editor-specific directories
+.vscode/
+.idea/
+*.swp
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore local environment files
+*.env
+
+# Ignore log files and debug output
+*.log

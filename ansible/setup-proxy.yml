@@ -1,0 +1,45 @@
+---
+- name: Configure public EC2 instance as reverse proxy
+  hosts: bastion
+  become: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
+    
+    - name: Create Nginx reverse proxy configuration file
+      copy:
+        dest: /etc/nginx/sites-available/reverse-proxy.conf
+        content: |
+          server {
+              listen 80;
+              server_name _;
+
+              location / {
+                  proxy_pass http://{{ private_ec2_ip }}:{{ app_port }};
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+              }
+          }
+    - name: Enable reverse proxy configuration
+      file:
+        src: /etc/nginx/sites-available/reverse-proxy.conf
+        dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+        state: link
+
+    - name: Remove default Nginx configuration if exists
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Restart Nginx to apply changes
+      service:
+        name: nginx
+        state: restarted
