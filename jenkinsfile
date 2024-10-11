@@ -31,7 +31,9 @@ pipeline {
 
         stage('Setup connection') {
             steps {
-                sh './jumphost-setup.sh'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
+                    sh './jumphost-setup.sh'
+                }
             }
         }
 
