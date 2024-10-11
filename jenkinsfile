@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your Terraform project from version control
-                git branch: 'main','https://github.com/Ohabbak/infrastrucure-setup.git'
+                git branch: 'main', url: 'https://github.com/Ohabbak/infrastrucure-setup.git'
             }
         }
 
