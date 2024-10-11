@@ -7,7 +7,17 @@ terraform {
   }
 
   required_version = ">= 1.0"
+
+  backend "s3" {
+    bucket         = "tfbackend-storage"
+    key            = "terraform.tfstate"
+    #dynamodb_table = "terraform-state-lock"
+    region         = "us-east-1"
+  }
+
+
 }
+ 
 
 provider "aws" {
   region = "us-east-1"  # Change to your preferred region

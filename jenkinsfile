@@ -1,0 +1,48 @@
+pipeline {
+    agent { label 'docker' }
+
+    environment {
+        AWS_CREDENTIALS_ID = 'aws-credentials'   // The ID of your AWS credentials in Jenkins
+        AWS_REGION = 'us-east-1'                 // Your AWS region
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your Terraform project from version control
+                git 'https://github.com/Ohabbak/infrastrucure-setup.git'
+            }
+        }
+
+
+        stage('Terraform Apply') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
+                    // Apply the Terraform plan
+                    sh """
+                    cd terraform
+                    terraform apply -auto-approve
+                    cd ..
+                    """
+                }
+            }
+        }
+
+        stage('Setup connection') {
+            steps {
+                sh './jumphost-setup.sh'
+            }
+        }
+
+        stage('Setup Ansible') {
+            steps {
+                sh """
+                cd ansible
+                ansible-playbook -i inventory setup-k3s.yml 
+                ansible-playbook -i inventory setup-proxy.yml
+                """
+            }
+        }
+    }
+    
+}
