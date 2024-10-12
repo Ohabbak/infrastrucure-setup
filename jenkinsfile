@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker' }
+    agent any
 
     environment {
         AWS_CREDENTIALS_ID = 'aws-credentials'   // The ID of your AWS credentials in Jenkins
