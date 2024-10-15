@@ -9,10 +9,10 @@ terraform {
   required_version = ">= 1.0"
 
   backend "s3" {
-    bucket         = "tfbackend-storage"
+    bucket         = "tfbackend-stg"
     key            = "terraform.tfstate"
     #dynamodb_table = "terraform-state-lock"
-    region         = "us-east-1"
+    region         = "us-west-1"
   }
 
 
