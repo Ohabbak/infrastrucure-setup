@@ -4,6 +4,9 @@ resource "aws_subnet" "public_subnet" {
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"  # Change as needed
 
+  # create a new public address to each instance inside this subnet
+  map_public_ip_on_launch = true
+
   tags = {
     Name = "public_subnet"
   }
@@ -13,7 +16,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1a"  # Change as needed
+  availability_zone = "us-east-1b"  # Change as needed
 
   tags = {
     Name = "private_subnet"
@@ -68,6 +71,13 @@ resource "aws_security_group" "bastion_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # Replace with your IP for SSH access
   }
 
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -100,6 +110,8 @@ resource "aws_security_group" "private_sg" {
     cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
   }
 
+
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -131,3 +143,5 @@ resource "aws_route_table_association" "private_subnet_assoc" {
   subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private_route_table.id
 }
+
+

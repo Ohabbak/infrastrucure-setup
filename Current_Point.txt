@@ -1,0 +1,11 @@
+1- terraform
+
+created VPC , two subnets (private,public) ,  two route tables (one associated to private and other one to public)
+created EKS , two node groups ( private, public ) , two security groups (one associated to private and other one to public) , with taints & labels for Schedulling 
+                associate each node group with a subnet inside VPC ( public and private )
+
+# at this point the Infrastructure must be ready for work.
+
+
+2- jenkins
+
