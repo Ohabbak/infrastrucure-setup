@@ -17,7 +17,7 @@ resource "local_file" "tf_key" {
 
 # Create the bastion host (public EC2)
 resource "aws_instance" "bastion" {
-  ami           = "ami-0866a3c8686eaeeba"  # Change to a valid AMI in your region
+  ami           = "ami-0da424eb883458071"  # Change to a valid AMI in your region
   instance_type = "t2.micro"
   key_name = aws_key_pair.tf_key.key_name
   subnet_id     = aws_subnet.public_subnet.id
@@ -33,8 +33,8 @@ resource "aws_instance" "bastion" {
 
 # Create a private EC2 instance
 resource "aws_instance" "private_instance" {
-  ami           = "ami-0866a3c8686eaeeba"  # Change to a valid AMI in your region
-  instance_type = "t2.micro"
+  ami           = "ami-0da424eb883458071"  # Change to a valid AMI in your region
+  instance_type = "t2.medium"
   subnet_id     = aws_subnet.private_subnet.id
   security_groups = [aws_security_group.private_sg.id]
   key_name = aws_key_pair.tf_key.key_name

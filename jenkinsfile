@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        AWS_CREDENTIALS_ID = 'aws-credentials'   // The ID of your AWS credentials in Jenkins
-        AWS_REGION = 'us-east-1'                 // Your AWS region
+        AWS_CREDENTIALS_ID = 'admin'   // The ID of your AWS credentials in Jenkins
+        AWS_REGION = 'us-west-1'                 // Your AWS region
     }
 
     stages {
