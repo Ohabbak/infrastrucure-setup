@@ -30,6 +30,7 @@ resource "aws_volume_attachment" "jenkins_with_volume" {
 # Create the jenkins host (public EC2)
 resource "aws_instance" "jenkins" {
   ami           = "ami-005fc0f236362e99f"  # Change to a valid AMI in your region
+  
   instance_type = "t2.micro"
   key_name = aws_key_pair.tf_key.key_name
   subnet_id     = aws_subnet.public_subnet.id
@@ -52,6 +53,7 @@ resource "aws_instance" "jenkins" {
               #!/bin/bash
               sudo apt-get update -y
               sudo apt-get install -y openjdk-11-jdk
+
 
 
               # Mount EBS volume
