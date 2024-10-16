@@ -1,7 +1,8 @@
 cd terraform
-chmod 400 ec2.pem
-rm ~/.ssh/ec2.pem
-cp ec2.pem ~/.ssh
+sudo chmod 400 ec2.pem
+sudo rm ~/.ssh/ec2.pem
+sudo cp ec2.pem ~/.ssh
+
 
 bastion_ip=$(terraform output --raw bastion_public_ip)
 private_ip=$(terraform output --raw Private_instance_ip)
