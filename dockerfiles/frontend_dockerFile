@@ -1,0 +1,26 @@
+# Use the official Node.js image as the base image
+FROM node:18-alpine
+
+# Set the working directory inside the container
+WORKDIR /frontend
+
+# Copy the package.json and package-lock.json files
+COPY ./react_frontend/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the React project files to the container
+COPY ./react_frontend/ ./
+
+# Build the React app for production
+RUN npm run build
+
+# Expose the port that the React app will run on
+EXPOSE 3000
+
+# Serve the React app using the `serve` package or similar
+RUN npm install -g serve
+
+# Command to run the React app
+CMD ["serve", "-s", "build", "-l", "3000"]

@@ -54,30 +54,32 @@ resource "aws_instance" "jenkins" {
               sudo apt-get install -y openjdk-11-jdk
 
 
-              # Mount EBS volume
-              sudo mkdir -p /var/jenkins_home
-              sudo mount /dev/sdf /var/jenkins_home
+              sudo file -s /dev/xvdf          
+              sudo mkfs -t ext4 /dev/xvdf
+              sudo mount /dev/xvdf /var/lib/jenkins
 
-              # Check if Jenkins home is already set up
-              if [ ! -d /var/jenkins_home/jobs ]; then
-                  # Copy default Jenkins home contents if the mount is new
-                  sudo cp -r /var/lib/jenkins/* /var/jenkins_home/
+              # Ensure proper ownership for Jenkins
+              sudo chown -R jenkins:jenkins /var/lib/jenkins_home
+
+              # Make the mount persistent across reboots
+              if ! grep -qs '/var/lib/jenkins_home' /etc/fstab; then
+                echo '/dev/xvdf /var/lib/jenkins_home ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
               fi
 
               # Set Jenkins home directory
-              sudo usermod -d /var/jenkins_home jenkins
+              sudo usermod -d /var/lib/jenkins_home jenkins
 
 
 
+              # Install Jenkins
               curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-              
               echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
-              
               sudo apt-get update -y
               sudo apt-get install -y jenkins
+
+              # Start and enable Jenkins
               sudo systemctl start jenkins
               sudo systemctl enable jenkins
-              
               EOF
 }
 
@@ -126,3 +128,5 @@ resource "aws_instance" "jenkins" {
 # output "Private_instance_ip" {
 #   value = aws_instance.private_instance.private_ip
 # }
+
+

@@ -1,0 +1,15 @@
+FROM ubuntu:latest
+
+RUN apt update -y && \
+    apt install openjdk-17 -y && \ 
+    apt install openssh-server -y  && \
+    apt install maven -y
+
+EXPOSE 3000 22           # 3000 port of the java backend port
+
+WORKDIR /backend/
+
+COPY ./spring_backend/ /backend/        # copy backend project to the image
+
+
+ENTRYPOINT ["mvn","spring-boot:run"]         # run the project
