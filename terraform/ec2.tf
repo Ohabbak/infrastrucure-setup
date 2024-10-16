@@ -30,6 +30,7 @@ resource "aws_volume_attachment" "jenkins_with_volume" {
 # Create the jenkins host (public EC2)
 resource "aws_instance" "jenkins" {
   ami           = "ami-005fc0f236362e99f"  # Change to a valid AMI in your region
+  
   instance_type = "t2.micro"
   key_name = aws_key_pair.tf_key.key_name
   subnet_id     = aws_subnet.public_subnet.id
@@ -54,9 +55,16 @@ resource "aws_instance" "jenkins" {
               sudo apt-get install -y openjdk-11-jdk
 
 
+<<<<<<< HEAD
               sudo file -s /dev/xvdf          
               sudo mkfs -t ext4 /dev/xvdf
               sudo mount /dev/xvdf /var/lib/jenkins
+=======
+
+              # Mount EBS volume
+              sudo mkdir -p /var/jenkins_home
+              sudo mount /dev/sdf /var/jenkins_home
+>>>>>>> 85eb2f2c6949c11a3f87a282ddf7d152c8e94a33
 
               # Ensure proper ownership for Jenkins
               sudo chown -R jenkins:jenkins /var/lib/jenkins_home
