@@ -19,8 +19,8 @@ pipeline {
             steps {
                 sh '''
                 cd application
-                docker build . -t ${IMAGE_NAME}:latest
                 echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                docker build . -t ${IMAGE_NAME}:latest
                 docker push ${IMAGE_NAME}:latest
                 docker rmi ${IMAGE_NAME}:latest
                 '''
