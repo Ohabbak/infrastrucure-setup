@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reactapp
+  labels:
+    app: reactapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reactapp
+  template:
+    metadata:
+      labels:
+        app: reactapp
+    spec:
+      containers:
+      - name: reactapp
+        image: ohabbak/react-app:latest
+        ports:
+        - containerPort: 80

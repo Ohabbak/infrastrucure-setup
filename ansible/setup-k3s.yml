@@ -23,11 +23,16 @@
         state: started
         enabled: yes
 
-    # - name: Get the K3s server node token
-    #   shell: cat /var/lib/rancher/k3s/server/node-token
-    #   register: node_token
+    - name: Copy K3s kubeconfig to user home directory
+      copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: /home/{{ ansible_user }}/.kube/config
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0644'
 
-    # - name: Save K3s node token to file
-    #   copy:
-    #     content: "{{ node_token.stdout }}"
-    #     dest: /tmp/k3s_node_token.txt
+    - name: Update kubeconfig server IP
+      replace:
+        path: /home/{{ ansible_user }}/.kube/config
+        regexp: '127.0.0.1'
+        replace: "{{ private_ip }}"
