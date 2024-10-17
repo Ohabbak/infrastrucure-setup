@@ -22,14 +22,13 @@
         name: k3s
         state: started
         enabled: yes
-
-    - name: Copy K3s kubeconfig to user home directory
-      copy:
-        src: /etc/rancher/k3s/k3s.yaml
-        dest: /home/jenkins/.kube/config
-        owner: "jenkins"
-        group: "jenkins"
-        mode: '0644'
+    
+    - name: Fetch K3s kubeconfig to local machine
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml    # Remote file path on the EC2 instance
+        dest: /home/jenkins/.kube/config  # Local destination directory
+        flat: yes                          # Keep the same filename
+        validate_checksum: false
 
     - name: Update kubeconfig server IP
       replace:
