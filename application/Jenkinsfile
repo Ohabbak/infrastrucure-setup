@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        environment {
+            DOCKERHUB_CREDENTIALS = credentials('dockerhub')  // Reference your DockerHub credentials ID
+            IMAGE_NAME = 'ohabbak/react-app'
+            DOCKER_REGISTRY_URL = 'https://registry.hub.docker.com'
+        }
+
+        stage('Checkout') {
+            steps {
+                // Checkout your Terraform project from version control
+                git branch: 'main', url: 'https://github.com/Ohabbak/infrastrucure-setup.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'cd application'
+                sh 'docker build . -t ${IMAGE_NAME}:latest'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push ${IMAGE_NAME}:latest'
+                sh 'docker rmi ${IMAGE_NAME}:latest'
+            }
+        }
+    }
+}
