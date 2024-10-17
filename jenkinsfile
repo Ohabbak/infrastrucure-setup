@@ -39,13 +39,13 @@ pipeline {
 
         stage('Setup Ansible') {
             steps {
-                sh """
+                sh '''
                 cd terraform
                 private_ip=$(terraform output --raw Private_instance_ip)
                 cd ../ansible
                 ansible-playbook -i inventory setup-k3s.yml 
                 ansible-playbook -i inventory setup-proxy.yml
-                """
+                '''
             }
         }
     }
