@@ -15,19 +15,19 @@ pipeline {
         }
 
 
-        // stage('Terraform Apply') {
-        //     steps {
-        //         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
-        //             // Apply the Terraform plan
-        //             sh """
-        //             cd terraform
-        //             terraform init
-        //             terraform apply -auto-approve
-        //             cd ..
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Terraform Apply') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
+                    // Apply the Terraform plan
+                    sh """
+                    cd terraform
+                    terraform init
+                    terraform apply -auto-approve
+                    cd ..
+                    """
+                }
+            }
+        }
 
         stage('Setup connection') {
             steps {
