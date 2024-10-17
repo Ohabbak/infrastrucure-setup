@@ -2,6 +2,9 @@
 - name: Setup K3s on Private EC2
   hosts: private-instance
   become: yes
+  vars:
+    private_ip: "{{ lookup('env', 'private_ip') }}"  
+    
   tasks:
     - name: Install dependencies
       apt:
@@ -35,5 +38,4 @@
         path: /home/jenkins/.kube/config
         regexp: '127.0.0.1'
         replace: "{{ private_ip }}"
-      environment:
-        private_ip: "{{ lookup('env', 'private_ip') }}" # Pull the value of private_ip from the shell environment
+      
