@@ -35,3 +35,5 @@
         path: /home/jenkins/.kube/config
         regexp: '127.0.0.1'
         replace: "{{ private_ip }}"
+      environment:
+        private_ip: "{{ lookup('env', 'private_ip') }}" # Pull the value of private_ip from the shell environment
