@@ -39,13 +39,15 @@ pipeline {
 
         stage('Setup Ansible') {
             steps {
-                sh '''
-                cd terraform
-                private_ip=$(terraform output --raw Private_instance_ip)
-                cd ../ansible
-                ansible-playbook -i inventory setup-k3s.yml 
-                ansible-playbook -i inventory setup-proxy.yml
-                '''
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
+                    sh '''
+                    cd terraform
+                    private_ip=$(terraform output --raw Private_instance_ip)
+                    cd ../ansible
+                    ansible-playbook -i inventory setup-k3s.yml 
+                    ansible-playbook -i inventory setup-proxy.yml
+                    '''
+                }
             }
         }
     }
