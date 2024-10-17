@@ -2,9 +2,7 @@
 - name: Setup K3s on Private EC2
   hosts: private-instance
   become: yes
-  vars:
-    private_ip: "{{ lookup('env', 'private_ip') }}"  
-    
+
   tasks:
     - name: Install dependencies
       apt:
@@ -32,10 +30,3 @@
         dest: /home/jenkins/.kube/config  # Local destination directory
         flat: yes                          # Keep the same filename
         validate_checksum: false
-
-    - name: Update kubeconfig server IP
-      replace:
-        path: /home/jenkins/.kube/config
-        regexp: '127.0.0.1'
-        replace: "{{ private_ip }}"
-      

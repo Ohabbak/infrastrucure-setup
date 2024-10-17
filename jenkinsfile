@@ -45,6 +45,7 @@ pipeline {
                     export private_ip=$(terraform output --raw Private_instance_ip)
                     cd ../ansible
                     ansible-playbook -i inventory setup-k3s.yml 
+                    sed -i "s/127.0.0.1/$private_ip/g" /home/jenkins/.kube/config
                     ansible-playbook -i inventory setup-proxy.yml
                     '''
                 }
