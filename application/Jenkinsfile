@@ -1,13 +1,13 @@
 pipeline {
     agent any
-
-    stages {
-        environment {
+    
+    environment {
             DOCKERHUB_CREDENTIALS = credentials('dockerhub')  // Reference your DockerHub credentials ID
             IMAGE_NAME = 'ohabbak/react-app'
             DOCKER_REGISTRY_URL = 'https://registry.hub.docker.com'
-        }
-
+    }
+    stages {
+        
         stage('Checkout') {
             steps {
                 // Checkout your Terraform project from version control
