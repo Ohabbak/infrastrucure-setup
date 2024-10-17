@@ -15,19 +15,19 @@ pipeline {
         }
 
 
-        // stage('Terraform Apply') {
-        //     steps {
-        //         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
-        //             // Apply the Terraform plan
-        //             sh """
-        //             cd terraform
-        //             terraform init
-        //             terraform apply -auto-approve
-        //             cd ..
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Terraform Apply') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
+                    // Apply the Terraform plan
+                    sh """
+                    cd terraform
+                    terraform init
+                    terraform apply -auto-approve
+                    cd ..
+                    """
+                }
+            }
+        }
 
         stage('Setup connection') {
             steps {
@@ -42,7 +42,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
                     sh '''
                     cd terraform
-                    private_ip=$(terraform output --raw Private_instance_ip)
+                    export private_ip=$(terraform output --raw Private_instance_ip)
                     cd ../ansible
                     ansible-playbook -i inventory setup-k3s.yml 
                     ansible-playbook -i inventory setup-proxy.yml

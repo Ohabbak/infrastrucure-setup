@@ -26,13 +26,13 @@
     - name: Copy K3s kubeconfig to user home directory
       copy:
         src: /etc/rancher/k3s/k3s.yaml
-        dest: /home/{{ ansible_user }}/.kube/config
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        dest: /home/jenkins/.kube/config
+        owner: "jenkins"
+        group: "jenkins"
         mode: '0644'
 
     - name: Update kubeconfig server IP
       replace:
-        path: /home/{{ ansible_user }}/.kube/config
+        path: /home/jenkins/.kube/config
         regexp: '127.0.0.1'
         replace: "{{ private_ip }}"
