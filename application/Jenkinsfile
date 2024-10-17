@@ -17,11 +17,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'cd application'
-                sh 'docker build . -t ${IMAGE_NAME}:latest'
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push ${IMAGE_NAME}:latest'
-                sh 'docker rmi ${IMAGE_NAME}:latest'
+                sh '''
+                cd application
+                docker build . -t ${IMAGE_NAME}:latest
+                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                docker push ${IMAGE_NAME}:latest
+                docker rmi ${IMAGE_NAME}:latest
+                '''
             }
         }
     }
