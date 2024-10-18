@@ -45,9 +45,7 @@ pipeline {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS_ID]]) {
                     sh '''
-                    cd terraform
-                    export private_ip=$(terraform output --raw Private_instance_ip)
-                    cd ../ansible
+                    cd ansible
                     ansible-playbook -i inventory setup-k3s.yml
                     ansible-playbook -i inventory setup-proxy.yml
                     '''
