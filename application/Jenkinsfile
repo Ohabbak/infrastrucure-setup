@@ -30,8 +30,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                kubectl apply -f application/k8s/deployment.yml
-                kubectl apply -f application/k8s/service.yml
+                    scp -r application/k8s private:/home/ubuntu/app
+                    ssh -o StrictHostKeyChecking=no private << EOF
+                    kubectl apply -f app/k8s/deployment.yml
+                    kubectl apply -f app/k8s/service.yml
+                    EOF
                 '''
 
             }
