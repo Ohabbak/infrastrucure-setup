@@ -2,7 +2,7 @@
 resource "aws_subnet" "public_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-west-1a"  # Change as needed
+  availability_zone = "us-west-1a"  
 
   tags = {
     Name = "public_subnet"
@@ -13,7 +13,7 @@ resource "aws_subnet" "public_subnet" {
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-west-1a"  # Change as needed
+  availability_zone = "us-west-1a"  
 
   tags = {
     Name = "private_subnet"
@@ -65,7 +65,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Replace with your IP for SSH access
+    cidr_blocks = ["0.0.0.0/0"]  #  IP for SSH access
   }
 
   egress {
@@ -104,7 +104,7 @@ resource "aws_security_group" "private_sg" {
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
+    cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes API server)
   }
 
   egress {
